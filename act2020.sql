@@ -73,3 +73,24 @@ create table estado_formacion (
 	constraint uk_nombre_estado unique (nombre_estado)
 	
 )
+create table nivel_formacion(
+id int not null primary key,
+	nivel varchar (40)not null,
+	estado varchar (40)not null,
+	constraint uk_nivel unique (nivel)
+)
+create table programa(
+id int not null primary key,
+	codigo varchar (50)not null,
+	version varchar (40)not null,
+	nombre varchar (500)not null,
+	sigla varchar (40)not null,
+	estado varchar (40)not null,
+	id_nivel_formacion int not null,
+	constraint uk_programa unique (codigo,version),
+	constraint fk_nifo_prog foreign key (id_nivel_formacion)references nivel_formacion(id)
+	
+) 
+
+
+
