@@ -143,11 +143,11 @@ constraint fk_jorn_trim foreign key (id_jornada)references jornada (id),
 constraint fk_nifo_trim foreign key (id_nivel_formacion)references nivel_formacion(id),
 constraint uk_trimestre_ unique (nombre_trimestre,id_jornada,id_nivel_formacion)
 )
-create table ficha_has_trimetre(
+create table ficha_has_trimestre(
 id int not null primary key ,
 id_ficha int not null,
 id_trimestre int not null,
-constraint uk_ficha_has_trimestre unique (id_ficha,id_trimestre),	
+constraint uk_ficha_has_trimestre_ unique (id_ficha,id_trimestre),	
 constraint fk_trim_fitr foreign key (id_trimestre)references trimestre(id),
 constraint	fk_fht foreign key (id_ficha)references ficha (id)
 )
@@ -186,6 +186,16 @@ id int not null primary key,
 	constraint fk_comp_reap foreign key (id_competencia)references competencia (id)	
 )
 
+create table resultados_vistos (
+id int not null primary key,
+	id_resultado_aprendizaje int not null,
+	id_ficha_has_trimestre int not null,
+	id_planeacion int not null,
+	constraint uk_resultados_vistos unique (id_resultado_aprendizaje,id_ficha_has_trimestre,id_planeacion),
+	constraint fk_reap_revi foreign key (id_resultado_aprendizaje)references resultado_aprendizaje(id),
+	constraint fk_fitr_revi foreign key (id_ficha_has_trimestre)references ficha_has_trimestre(id),
+	constraint fk_plan foreign key (id_planeacion)references planeacion (id)
+)
 create table programacion_trimestre(
 	id int not null primary key,
 	id_resultado_aprendizaje int not null,
@@ -197,5 +207,41 @@ create table programacion_trimestre(
 	constraint fk_trim_pltr foreign key (id_planeacion)references planeacion(id)
 
 )
+create table actividad_planeacion(
+id int not null primary key,
+	id_actividad_proyecto int not null,
+	id_programacion_trimestre int not null,
+	constraint uk_actividad_plneacion unique (id_actividad_proyecto,id_programacion_trimestre),
+	constraint fk_acti_acpl foreign key (id_actividad_proyecto)references actividad_proyecto(id),
+	constraint fk_act_protri foreign key (id_programacion_trimestre)references programacion_trimestre (id)
+	
+)
+create table actividad_proyecto(
+id int not null primary key,
+id_fase int not null ,
+numero_actividad int not null,
+descipcion_actividad varchar (400),
+estado varchar (40),
+constraint uk_actividad_proyecto unique (id_fase,numero_actividad),
+constraint fk_fase_acti foreign key (id_fase)references fase(id)
+)
+create table fase (
+id int not null primary key,
+	id_proyecto int not null,
+	nombre varchar (40)not null,
+	estado varchar (40)not null,
+	constraint uk_fase unique (id_proyecto,nombre),
+	constraint fk_proy_fase foreign key (id_proyecto)references proyecto(id)	
+)
+create table proyecto(
+	id int not null primary key,
+	codigo varchar(40)not null,
+	nombre varchar (500)not null,
+	estado varchar (40)not null,
+	id_programa int not null,
+	constraint uk_codigo_ unique (codigo),
+	constraint fk_prom foreign key (id_programa)references programa (id)
+	
+)							  
 
 
