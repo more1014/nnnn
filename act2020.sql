@@ -330,6 +330,11 @@ id int not null primary key,
 	 constraint uk_trimestre_vigente unique ( id_year,trimestre_programado),
 	 constraint fk_year_trim_vige foreign key (id_year)references year_ (id)
  )
+ 
+ 
+ 
+ 
+ 
  create table year_(
  id int not null primary key,
 	 number_year int not null, 
@@ -342,3 +347,75 @@ id int not null primary key,
 	 estado varchar (40)not null,
 	 constraint uk_instuctor unique (id_cliente)
  ) 
+ create table disponibilidad_competencias(
+	 id int not null primary key,
+	 id_competencia int not null,
+	 id_vinculacion_instructor int not null,
+	 constraint uk_disp_comp unique ( id_competencia, id_vinculacion_instructor),
+	 constraint fk_vi_ins foreign key (id_vinculacion_instructor)references vinculacion_instructor(id),
+	 constraint fk_ foreign key (id_competencia)references competencia (id)
+	 
+ )
+ create table dia_jornada (
+	 id int not null primary key,
+	 id_jornada_instructor int not null,
+	 id_dia int not null,
+	 hora_inicio int not null,
+	 hora_fin int not null,
+	 constraint uk_dia_jornada unique (id_jornada_instructor,id_dia,hora_inicio, hora_fin),
+	 constraint fk_jorn_inst foreign key (id_jornada_instructor)references jornada_instructor (id),
+	 constraint fr_dia_jorn foreign key (id_dia)references dia (id) 
+ )
+create table jornada_instructor(
+id int not null primary key,
+	nombre_jornada varchar (80)not null,
+	descripcion varchar (200)not null,
+	estado varchar (40)not null ,
+	constraint uk_nombre_jornada_ unique (nombre_jornada)
+)
+create table disponibilidad_horaria(
+	id int not null primary key,
+	id_jornada_instructor int not null,
+	id_vinculacion_instructor  int not null,
+	constraint uk_disponibilidad_horaria unique (id_jornada_instructor,id_vinculacion_instructor),
+	constraint fk_jorn_disp foreign key (id_jornada_instructor)references jornada_instructor (id),
+	constraint fk_vin_ins foreign key (id_vinculacion_instructor)references vinculacion_instructor(id)
+	 
+)
+create table vinculacion_instructor (
+	id int not null primary key,
+	id_year int not null,
+	fecha_inicio date not null,
+	fecha_fin date not null ,
+	id_vinculacion int not null,
+	id_instructor int not null,
+	constraint uk_vinculacion_instructor unique (id_year,fecha_inicio,fecha_fin,id_vinculacion,id_instructor),
+	constraint fk_year_ foreign key (id_year) references year_ (id),
+	constraint fk_vinc_inst foreign key (id_vinculacion)references vinculacion (id),
+	constraint fk_inst foreign key (id_instructor) references instructor (id)
+)
+create table  vinculacion (
+id int not null primary key,
+	tipo_vinculacion varchar(40)not null,
+	horas int not null,
+	estado varchar (40)not null,
+	constraint uk_vonculacion unique (tipo_vinculacion)
+)
+create table area(
+	id int not null primary key,
+	nombre_area varchar (40)not null,
+	estado varchar (40)not null,
+	url_logo varchar (1000),
+	constraint uk_area unique (nombre_area)
+	
+) 
+create table area_instructor(
+id int not null primary key,
+	id_area int not null,
+	id_instructor int not null,
+	estado varchar (40)not null,
+	constraint uk_area_instructor unique (id_area,id_instructor),
+	constraint fk_intr_esin foreign key (id_instructor)references instructor(id),
+	constraint fk_a_i foreign key (id_area)references area (id) 
+)
+
