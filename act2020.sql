@@ -278,4 +278,67 @@ id int not null primary key,
 	estado varchar (40)not null,
 	constraint uk_sede unique (nombre_sede)
 )
+create table dia (
+id int not null primary key,
+	nombre_dia varchar(40)not null,
+	estado varchar (40)not null,
+	constraint uk_dia unique (nombre_dia)
 
+)
+create table  horario(
+id int not null primary key,
+	hora_inicio time not null,
+	id_ficha_has_trimestre int not null,
+	id_instructor int not null,
+	id_dia int not null,
+	id_ambiente int  not null,
+	id_version_horario int not null,
+	hora_fin time not null,
+	id_modalidad int not null,
+	constraint uk_horario unique(hora_inicio,id_ficha_has_trimestre,id_instructor,id_dia,id_ambiente,id_version_horario,hora_fin ),
+	constraint fk_filr_hora foreign key (id_ficha_has_trimestre)references ficha_has_trimestre (id),
+	constraint fk_inst_hora foreign key (id_instructor)references instructor (id ),
+	constraint fk_dia_hora foreign key (id_dia)references dia (id),
+	constraint fk_ambi_hora foreign key (id_ambiente)references ambiente (id),
+	constraint fk_veho_hora foreign key (id_version_horario)references version_horario(id),
+	constraint fk_moda_hora foreign key (id_modalidad )references modalidad (id) 
+	
+)
+create table modalidad (
+id int not null primary key,
+	nombre_modalidad varchar (40)not null,
+	color varchar (50)not null,
+	estado varchar (40)not null,
+	constraint uk_modalidad unique (nombre_modalidad)
+	
+)
+ create table version_horario(
+ id int not null primary key,
+	 numero_version varchar (40)not null,
+	 id_trimestre_vigente int not null,
+	 estado varchar (40)not null,
+	 constraint uk_version_horario unique (numero_version,id_trimestre_vigente),
+	 constraint fk_trvi_veho foreign key (id_trimestre_vigente)references trimestre_vigente (id)
+ )
+ create table trimestre_vigente(
+ id int not null primary key,
+	 id_year int not null,
+	trimestre_programado int not null,
+	 fecha_inicio date not null,
+	 fecha_fin date not null,
+	 estado  varchar (40)not null,
+	 constraint uk_trimestre_vigente unique ( id_year,trimestre_programado),
+	 constraint fk_year_trim_vige foreign key (id_year)references year_ (id)
+ )
+ create table year_(
+ id int not null primary key,
+	 number_year int not null, 
+	 estado varchar (40)not null,
+	 constraint uk_year unique (number_year)
+ ) 
+ create table instructor(
+ id int not null primary key,
+	 id_cliente int not null,
+	 estado varchar (40)not null,
+	 constraint uk_instuctor unique (id_cliente)
+ ) 
