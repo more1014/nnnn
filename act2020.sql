@@ -168,3 +168,34 @@ id int not null primary key,
     constraint fk_fich_apre foreign key (id_ficha)references ficha (id),
 	constraint fk_fich_pln foreign key  (id_planeacion)references planeacion(id)
 )
+create table competencia(
+id int not null primary key,
+	id_programa int not null,
+	codigo_competencia varchar(50)not null,
+	denominacion varchar (1000)not null ,
+	constraint uk_competencia unique (id_programa,codigo_competencia),
+	constraint fk_prog_comp foreign key (id_programa)references programa(id)
+	
+)
+create table resultado_aprendizaje(
+id int not null primary key,
+	codigo_resultado varchar (40)not null,
+	id_competencia int not null,
+	denominacion varchar (1000)not null,
+	constraint uk_resultado_aprendizaje unique (codigo_resultado,id_competencia),
+	constraint fk_comp_reap foreign key (id_competencia)references competencia (id)	
+)
+
+create table programacion_trimestre(
+	id int not null primary key,
+	id_resultado_aprendizaje int not null,
+	id_trimestre int not null,
+	id_planeacion int not null,
+	constraint uk_programacion_trimestre unique (id_resultado_aprendizaje,id_trimestre,id_planeacion),
+	constraint fk_reap_pltr foreign key (id_resultado_aprendizaje)references resultado_aprendizaje (id),
+	constraint fk_pro_tri foreign key (id_trimestre)references trimestre(id),
+	constraint fk_trim_pltr foreign key (id_planeacion)references planeacion(id)
+
+)
+
+
