@@ -185,7 +185,6 @@ id int not null primary key,
 	constraint uk_resultado_aprendizaje unique (codigo_resultado,id_competencia),
 	constraint fk_comp_reap foreign key (id_competencia)references competencia (id)	
 )
-
 create table resultados_vistos (
 id int not null primary key,
 	id_resultado_aprendizaje int not null,
@@ -243,5 +242,40 @@ create table proyecto(
 	constraint fk_prom foreign key (id_programa)references programa (id)
 	
 )							  
+create table limitacion_ambiente(
+id int not null primary key,
+	id_resultado_aprendizaje int not null,
+	id_ambiente int not null,
+	constraint uk_limitacion_ambiente unique (id_resultado_aprendizaje,id_ambiente),
+	constraint fk_reap_liam foreign key (id_resultado_aprendizaje)references resultado_aprendizaje (id),
+	constraint fk_ambi_liam foreign key (id_ambiente)references ambiente (id)
+)
+create table ambiente(
+	id int not null primary key,
+	id_sede int not null,
+	numero_ambiente varchar(50)not null,
+	descripcion varchar (1000)not null,
+	estado varchar (40)not null,
+	limitacion varchar (40)not null,
+	id_tipo_ambiente int not null,
+	constraint uk_ambiente unique (id_sede,numero_ambiente),
+	constraint fk_sede_ambi foreign key (id_sede)references sede (id),
+	constraint fk_tiam_ambi foreign key (id_tipo_ambiente)references tipo_ambiente (id)
 
+)
+create table tipo_ambiente(
+id int not null primary key,
+	tipo varchar (50)not null,
+	descripcion varchar (100)not null,
+	estado varchar (40)not null,
+	constraint uk_tipo_ambiente unique (tipo)
+
+)
+create table sede (
+id int not null primary key,
+	nombre_sede varchar (50)not null,
+	direccion varchar (400)not null,
+	estado varchar (40)not null,
+	constraint uk_sede unique (nombre_sede)
+)
 
